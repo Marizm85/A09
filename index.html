@@ -1,105 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>San Joaquin Valley Town Hall</title>
+/*!
+ * SlickNav Responsive Mobile Menu v1.0.10
+ * (c) 2016 Josh Cope
+ * licensed under MIT
+ */
+(function(factory) {
+  if (typeof define === "function" && define.amd) {
+    define(["jquery"], factory);
+  } else if (typeof exports === "object") {
+    factory(require("jquery"));
+  } else {
+    factory(jQuery);
+  }
+})(function($) {
+  var defaults = {
+    label: "MENU",
+    duplicate: true,
+    duration: 200,
+    easingOpen: "swing",
+    easingClose: "swing",
+    closedSymbol: "►",
+    openedSymbol: "▼",
+    prependTo: "body",
+    parentTag: "a",
+    closeOnClick: false,
+    allowParentLinks: false,
+    nestedParentLinks: true,
+    showChildren: false,
+    removeIds: false,
+    removeClasses: false,
+    brand: "",
+    init: function() {},
+    beforeOpen: function() {},
+    beforeClose: function() {},
+    afterOpen: function() {},
+    afterClose: function() {}
+  };
 
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  var SlickNav = function(element, options) {
+    var self = this;
+    self.settings = $.extend({}, defaults, options);
+    self._defaults = defaults;
+    self._name = "slicknav";
+    self.init(element);
+  };
 
-  <link rel="stylesheet" href="style.css" />
+  SlickNav.prototype.init = function(element) {
+    var self = this;
+    var settings = self.settings;
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="menu/slicknav.js" defer></script>
+    var menu = $(element);
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      $('#menu').slicknav({
-        prependTo: '#nav_container'
+    if (settings.duplicate) {
+      self.mobileNav = menu.clone();
+      self.mobileNav.removeAttr("id");
+      self.mobileNav.find("*").each(function(i, e) {
+        var $e = $(e);
+        $e.removeAttr("id");
       });
+    } else {
+      self.mobileNav = menu;
+    }
+
+    if (settings.removeClasses) {
+      self.mobileNav.removeAttr("class");
+      self.mobileNav.find("*").each(function(i, e) {
+        $(e).removeAttr("class");
+      });
+    }
+
+    if (settings.removeIds) {
+      self.mobileNav.removeAttr("id");
+      self.mobileNav.find("*").each(function(i, e) {
+        $(e).removeAttr("id");
+      });
+    }
+
+    var iconClass = "slicknav_icon";
+    var menuBar = $('<div class="slicknav_menu"></div>');
+    if (settings.brand !== "") {
+      var brand = $('<div class="slicknav_brand">' + settings.brand + "</div>");
+      menuBar.append(brand);
+    }
+    self.btn = $('<a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn"><span class="slicknav_menutxt">' + settings.label + '</span><span class="' + iconClass + '"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a>');
+    menuBar.append(self.btn);
+    $(settings.prependTo).prepend(menuBar);
+    menuBar.append(self.mobileNav);
+
+    var items = self.mobileNav.find("li");
+
+    items.each(function() {
+      var item = $(this);
+      var link = item.find("a").first();
+      var subMenu = item.children("ul");
+
+      if (subMenu.length > 0) {
+        item.addClass("slicknav_parent");
+        var arrow = $('<a role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_arrow">' + settings.closedSymbol + "</a>");
+        if (settings.parentTag == "a") {
+          link.after(arrow);
+        } else {
+          item.children(settings.parentTag).append(arrow);
+        }
+
+        if (!settings.showChildren) {
+          subMenu.hide();
+        }
+
+        arrow.on("click", function(e) {
+          e.preventDefault();
+          if (item.hasClass("slicknav_open")) {
+            item.removeClass("slicknav_open");
+            subMenu.slideUp(settings.duration, settings.easingClose);
+            arrow.html(settings.closedSymbol);
+            settings.beforeClose(item);
+            settings.afterClose(item);
+          } else {
+            item.addClass("slicknav_open");
+            subMenu.slideDown(settings.duration, settings.easingOpen);
+            arrow.html(settings.openedSymbol);
+            settings.beforeOpen(item);
+            settings.afterOpen(item);
+          }
+        });
+      }
     });
-  </script>
-</head>
 
-<body>
-  <div class="container">
-    <header>
-      <img src="images/tlogo.png" alt="Town Hall Logo" />
-      <hgroup>
-        <h2>San Joaquin Valley Town Hall</h2>
-        <h3>Celebrating our <em class="shadow">75</em><sup>th</sup> Year</h3>
-      </hgroup>
-    </header>
+    self.mobileNav.attr("role", "menu");
+    self.mobileNav.find("a").attr("role", "menuitem");
 
-    <div id="nav_container"></div>
+    self.btn.on("click", function(e) {
+      e.preventDefault();
+      if (self.btn.hasClass("slicknav_open")) {
+        self.btn.removeClass("slicknav_open");
+        self.mobileNav.slideUp(settings.duration, settings.easingClose);
+        settings.beforeClose(self.mobileNav);
+        settings.afterClose(self.mobileNav);
+      } else {
+        self.btn.addClass("slicknav_open");
+        self.mobileNav.slideDown(settings.duration, settings.easingOpen);
+        settings.beforeOpen(self.mobileNav);
+        settings.afterOpen(self.mobileNav);
+      }
+    });
 
-    <ul id="menu">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="speakers/brancaccio.html">Brancaccio</a></li>
-      <li><a href="speakers/sorkin.html">Sorkin</a></li>
-      <li><a href="speakers/chua.html">Chua</a></li>
-      <li><a href="speakers/sampson.html">Sampson</a></li>
-    </ul>
+    if (settings.closeOnClick) {
+      self.mobileNav.find("a").on("click", function() {
+        self.mobileNav.slideUp(settings.duration, settings.easingClose);
+        self.btn.removeClass("slicknav_open");
+      });
+    }
 
-    <main>
-      <div class="left-column">
-        <h2>Guest speakers</h2>
+    settings.init();
+  };
 
-        <h3>October<br /><a href="speakers/brancaccio.html">David Brancaccio</a></h3>
-        <img src="images/brancaccio (1).png" alt="David Brancaccio photo" />
-
-        <h3>November<br /><a href="speakers/sorkin.html">Andrew Ross Sorkin</a></h3>
-        <img src="images/sorkin75.jpg" alt="Andrew Ross Sorkin photo" />
-
-        <h3>January<br /><a href="speakers/chua.html">Amy Chua</a></h3>
-        <img src="images/chua75.jpg" alt="Amy Chua photo" />
-
-        <h3>February<br /><a href="speakers/sampson.html">Scott Sampson</a></h3>
-        <img src="images/sampson.jpg" alt="Scott Sampson photo" />
-      </div>
-
-      <div class="right-column">
-        <h2>Our Mission</h2>
-        <p>
-          San Joaquin Valley Town Hall is a non-profit organization that is run by
-          an all-volunteer board of directors. Our mission is to bring nationally
-          and internationally renowned, thought-provoking speakers who inform,
-          educate, and entertain our audience!
-        </p>
-        <blockquote>
-          “Each year I give a ticket package to each of our family members.
-          I think of it as the gift of knowledge...and that is priceless.”
-        </blockquote>
-
-        <h2 class="speaker-heading">Speaker of the Month</h2>
-        <h3>Fossil Threads in the Web of Life</h3>
-        <p><strong>February<br>Scott Sampson</strong></p>
-        <img src="images/samdino.jpg" alt="Scott Sampson presenting with dinosaur"
-             style="float: right; margin-left: 15px; width: 150px;" />
-        <p>
-          What's 75 million years old and brand spanking new? A teenage
-          Utahceratops! Come to the Saroyan armed with your best dinosaur
-          roar, when Scott Sampson, Research Curator at the Utah Museum of
-          Natural History, steps to the podium...
-        </p>
-        <p>
-          <a href="speakers/sampson.html" class="readmore-link">Read more.</a> Or meet us there!
-        </p>
-
-        <h2>Our Ticket Packages</h2>
-        <ul>
-          <li>Season Package: $95</li>
-          <li>Patron Package: $200</li>
-          <li>Single Speaker: $25</li>
-        </ul>
-      </div>
-    </main>
-
-    <footer>
-      <p>
-        &copy; 2025, Mariz Masoud IS 117 mnm44 / San Joaquin Valley Town Hall, Fresno CA 93755
-      </p>
-    </footer>
-  </div>
-</body>
-</html>
+  $.fn.slicknav = function(options) {
+    return this.each(function() {
+      if (!$.data(this, "plugin_slicknav")) {
+        $.data(this, "plugin_slicknav", new SlickNav(this, options));
+      }
+    });
+  };
+});
