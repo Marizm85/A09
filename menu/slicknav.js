@@ -1,158 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>San Joaquin Valley Town Hall</title>
 
-(function(factory) {
-  if (typeof define === "function" && define.amd) {
-    define(["jquery"], factory);
-  } else if (typeof exports === "object") {
-    factory(require("jquery"));
-  } else {
-    factory(jQuery);
-  }
-})(function($) {
-  var methods = {},
-    defaults = {
-      label: "MENU",
-      duplicate: true,
-      duration: 200,
-      easingOpen: "swing",
-      easingClose: "swing",
-      closedSymbol: "►",
-      openedSymbol: "▼",
-      prependTo: "body",
-      parentTag: "a",
-      closeOnClick: false,
-      allowParentLinks: false,
-      nestedParentLinks: true,
-      showChildren: false,
-      removeIds: false,
-      removeClasses: false,
-      brand: "",
-      init: function() {},
-      beforeOpen: function() {},
-      beforeClose: function() {},
-      afterOpen: function() {},
-      afterClose: function() {}
-    },
-    mobileMenu = "slicknav",
-    prefix = "slicknav";
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
 
-  function Plugin(element, options) {
-    this.element = element;
-    this.settings = $.extend({}, defaults, options);
-    this._defaults = defaults;
-    this._name = mobileMenu;
-    this.init();
-  }
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="menu/slicknav.js" defer></script>
 
-  Plugin.prototype.init = function() {
-    var $this = this,
-      menu = $(this.element),
-      settings = this.settings,
-      $menu;
-
-    if (settings.duplicate) {
-      $menu = menu.clone();
-      $menu.removeAttr("id");
-      $menu.find("*").each(function(i, e) {
-        var $e = $(e);
-        $e.removeAttr("id");
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      $('#menu').slicknav({
+        prependTo: '#nav_container',
+        label: '',
+        closeOnClick: true,
+        allowParentLinks: true
       });
-    } else {
-      $menu = menu;
-    }
-
-    if (settings.removeClasses) {
-      $menu.removeAttr("class");
-      $menu.find("*").each(function(i, e) {
-        $(e).removeAttr("class");
-      });
-    }
-
-    if (settings.removeIds) {
-      $menu.removeAttr("id");
-      $menu.find("*").each(function(i, e) {
-        $(e).removeAttr("id");
-      });
-    }
-
-    var $menuBar = $('<div class="' + prefix + '_menu"></div>');
-    if (settings.brand !== "") {
-      var brand = $('<div class="' + prefix + '_brand">' + settings.brand + "</div>");
-      $menuBar.append(brand);
-    }
-
-    var icon = $('<a href="#" class="' + prefix + '_btn"><span class="' + prefix + '_menutxt">' + settings.label + '</span><span class="' + prefix + '_icon"><span class="' + prefix + '_icon-bar"></span><span class="' + prefix + '_icon-bar"></span><span class="' + prefix + '_icon-bar"></span></span></a>');
-    $menuBar.append(icon);
-    $(settings.prependTo).prepend($menuBar);
-    $menuBar.append($menu);
-
-    var items = $menu.find("li");
-
-    items.each(function() {
-      var item = $(this),
-        data = {},
-        link = item.find("a").first(),
-        subMenu = item.children("ul");
-
-      if (subMenu.length > 0) {
-        item.addClass(prefix + "_parent");
-        link.after('<a role="button" aria-haspopup="true" tabindex="-1" class="' + prefix + '_arrow">' + settings.closedSymbol + "</a>");
-      }
     });
+  </script>
+</head>
 
-    $menu.find("li a, li ." + prefix + "_arrow").on("click", function(e) {
-      var $target = $(this),
-        $parent = $target.closest("li");
+<body>
+  <div class="container">
+    <header>
+      <img src="images/tlogo.png" alt="Town Hall Logo" />
+      <hgroup>
+        <h2>San Joaquin Valley Town Hall</h2>
+        <h3>Celebrating our <em class="shadow">75</em><sup>th</sup> Year</h3>
+      </hgroup>
+    </header>
 
-      if ($target.hasClass(prefix + "_arrow")) {
-        e.preventDefault();
+    <div id="nav_container"></div>
 
-        if ($parent.hasClass(prefix + "_open")) {
-          $parent.removeClass(prefix + "_open");
-          $parent.find("> ul").slideUp(settings.duration, settings.easingClose);
-          $target.html(settings.closedSymbol);
-          settings.beforeClose();
-          settings.afterClose();
-        } else {
-          $parent.addClass(prefix + "_open");
-          $parent.find("> ul").slideDown(settings.duration, settings.easingOpen);
-          $target.html(settings.openedSymbol);
-          settings.beforeOpen();
-          settings.afterOpen();
-        }
-      } else if (settings.closeOnClick && !$target.hasClass(prefix + "_parent")) {
-        $(".slicknav_nav").slideUp(settings.duration, settings.easingClose);
-        $(".slicknav_btn").removeClass("slicknav_open");
-      }
-    });
+    <ul id="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="speakers.html">Speakers</a></li>
+      <li><a href="luncheons.html">Luncheons</a></li>
+      <li><a href="tickets.html">Tickets</a></li>
+      <li>
+        <a href="#">About Us</a>
+        <ul>
+          <li><a href="history.html">Our History</a></li>
+          <li><a href="board.html">Board of Directors</a></li>
+          <li><a href="past.html">Past Speakers</a></li>
+          <li><a href="contact.html">Contact Information</a></li>
+        </ul>
+      </li>
+    </ul>
 
-    $(".slicknav_btn").on("click", function(e) {
-      e.preventDefault();
+    <main>
+      <div class="left-column">
+        <h2>Guest speakers</h2>
 
-      var $button = $(this);
+        <h3>October<br /><a href="speakers/brancaccio.html">David Brancaccio</a></h3>
+        <img src="images/brancaccio (1).png" alt="David Brancaccio photo" />
 
-      if ($button.hasClass("slicknav_open")) {
-        $button.removeClass("slicknav_open");
-        $(".slicknav_nav").slideUp(settings.duration, settings.easingClose);
-        settings.beforeClose();
-        settings.afterClose();
-      } else {
-        $button.addClass("slicknav_open");
-        $(".slicknav_nav").slideDown(settings.duration, settings.easingOpen);
-        settings.beforeOpen();
-        settings.afterOpen();
-      }
-    });
+        <h3>November<br /><a href="speakers/sorkin.html">Andrew Ross Sorkin</a></h3>
+        <img src="images/sorkin75.jpg" alt="Andrew Ross Sorkin photo" />
 
-    $menu.addClass(prefix + "_nav");
-    $menu.attr("role", "menu");
-    $menu.find("a").attr("role", "menuitem");
-  };
+        <h3>January<br /><a href="speakers/chua.html">Amy Chua</a></h3>
+        <img src="images/chua75.jpg" alt="Amy Chua photo" />
 
-  $.fn[mobileMenu] = function(options) {
-    return this.each(function() {
-      if (!$.data(this, "plugin_" + mobileMenu)) {
-        $.data(this, "plugin_" + mobileMenu, new Plugin(this, options));
-      }
-    });
-  };
-});
+        <h3>February<br /><a href="speakers/sampson.html">Scott Sampson</a></h3>
+        <img src="images/sampson.jpg" alt="Scott Sampson photo" />
+      </div>
+
+      <div class="right-column">
+        <h2>Our Mission</h2>
+        <p>
+          San Joaquin Valley Town Hall is a non-profit organization that is run by
+          an all-volunteer board of directors. Our mission is to bring nationally
+          and internationally renowned, thought-provoking speakers who inform,
+          educate, and entertain our audience!
+        </p>
+        <blockquote>
+          “Each year I give a ticket package to each of our family members.
+          I think of it as the gift of knowledge...and that is priceless.”
+        </blockquote>
+
+        <h2 class="speaker-heading">Speaker of the Month</h2>
+        <h3>Fossil Threads in the Web of Life</h3>
+        <p><strong>February<br>Scott Sampson</strong></p>
+        <img src="images/samdino.jpg" alt="Scott Sampson presenting with dinosaur"
+             style="float: right; margin-left: 15px; width: 150px;" />
+        <p>
+          What's 75 million years old and brand spanking new? A teenage
+          Utahceratops! Come to the Saroyan armed with your best dinosaur
+          roar, when Scott Sampson, Research Curator at the Utah Museum of
+          Natural History, steps to the podium...
+        </p>
+        <p>
+          <a href="speakers/sampson.html" class="readmore-link">Read more.</a> Or meet us there!
+        </p>
+
+        <h2>Our Ticket Packages</h2>
+        <ul>
+          <li>Season Package: $95</li>
+          <li>Patron Package: $200</li>
+          <li>Single Speaker: $25</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        &copy; 2025, Mariz Masoud IS 117 mnm44 / San Joaquin Valley Town Hall, Fresno CA 93755
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
