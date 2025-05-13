@@ -67,6 +67,7 @@ header h2, header h3 {
 }
 
 #menu li {
+  position: relative;
   margin: 0;
 }
 
@@ -81,6 +82,40 @@ header h2, header h3 {
 #menu a:hover {
   background-color: #b22222;
   color: white;
+}
+
+#menu li ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #800000;
+  min-width: 200px;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+}
+
+#menu li:hover > ul {
+  display: block;
+}
+
+#menu li ul li {
+  display: block;
+  width: 100%;
+}
+
+#menu li ul li a {
+  padding: 12px 15px;
+  font-weight: normal;
+  display: block;
+  color: white;
+  background-color: #800000;
+  text-decoration: none;
+}
+
+#menu li ul li a:hover {
+  background-color: #b22222;
 }
 
 main {
