@@ -80,7 +80,7 @@ header h2, header h3 {
 
 #menu a:hover {
   background-color: #b22222;
-  color: #fff;
+  color: white;
 }
 
 main {
@@ -168,17 +168,15 @@ footer {
   text-align: center;
 }
 
-/* ---- Fixed SlickNav Styles to Match Shared Example ---- */
-
 .slicknav_menu {
-  background-color: #800000;
+  background-color: var(--main-color);
   font-family: Arial, sans-serif;
   padding: 0;
   margin: 0;
 }
 
 .slicknav_btn {
-  background-color: #800000;
+  background-color: var(--main-color);
   color: white;
   padding: 10px 15px;
   border: none;
@@ -189,7 +187,7 @@ footer {
 }
 
 .slicknav_nav {
-  background-color: #800000;
+  background-color: var(--main-color);
   padding: 0;
   margin: 0;
 }
@@ -210,12 +208,12 @@ footer {
 .slicknav_nav a:hover,
 .slicknav_nav .slicknav_row:hover {
   background-color: #b22222;
-  color: #fff;
+  color: white;
 }
 
 .slicknav_nav ul {
   padding-left: 15px;
-  background-color: #800000;
+  background-color: var(--main-color);
 }
 
 .slicknav_arrow {
@@ -224,9 +222,14 @@ footer {
   color: white;
 }
 
-
 @media screen and (max-width: 768px) {
   #menu {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .slicknav_menu {
     display: none;
   }
 }
