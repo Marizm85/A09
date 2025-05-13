@@ -1,3 +1,11 @@
+(function () {
+  var link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = "menu/slicknav.css";
+  document.head.appendChild(link);
+})();
+
 (function ($, document, window) {
   var defaults = {
     label: 'MENU',
@@ -65,17 +73,23 @@
 
     if (settings.removeIds) {
       $this.mobileNav.removeAttr('id');
-      $this.mobileNav.find('*').removeAttr('id');
+      $this.mobileNav.find('*').each(function (i, e) {
+        $(e).removeAttr('id');
+      });
     }
 
     if (settings.removeClasses) {
       $this.mobileNav.removeAttr('class');
-      $this.mobileNav.find('*').removeAttr('class');
+      $this.mobileNav.find('*').each(function (i, e) {
+        $(e).removeAttr('class');
+      });
     }
 
     if (settings.removeStyles) {
       $this.mobileNav.removeAttr('style');
-      $this.mobileNav.find('*').removeAttr('style');
+      $this.mobileNav.find('*').each(function (i, e) {
+        $(e).removeAttr('style');
+      });
     }
 
     iconClass = prefix + '_icon';
@@ -90,12 +104,10 @@
 
     $this.mobileNav.attr('class', prefix + '_nav');
     menuBar = $('<div class="' + prefix + '_menu"></div>');
-
     if (settings.brand !== '') {
       var brand = $('<div class="' + prefix + '_brand">'+settings.brand+'</div>');
       $(menuBar).append(brand);
     }
-
     $this.btn = $(
       ['<' + settings.parentTag + ' aria-haspopup="true" role="button" tabindex="0" class="' + prefix + '_btn ' + prefix + '_collapsed">',
         '<span class="' + prefix + '_menutxt">' + settings.label + '</span>',
@@ -107,7 +119,6 @@
       '</' + settings.parentTag + '>'
       ].join('')
     );
-
     $(menuBar).append($this.btn);
     if(settings.appendTo !== '') {
       $(settings.appendTo).append(menuBar);
