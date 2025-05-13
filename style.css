@@ -53,6 +53,36 @@ header h2, header h3 {
   padding-right: 2em;
 }
 
+#nav_container {
+  background-color: var(--main-color);
+}
+
+#menu {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: var(--main-color);
+}
+
+#menu li {
+  margin: 0;
+}
+
+#menu a {
+  display: block;
+  padding: 15px 25px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#menu a:hover {
+  background-color: #b22222;
+  color: #fff;
+}
+
 main {
   display: flex;
   flex-direction: row;
@@ -138,55 +168,65 @@ footer {
   text-align: center;
 }
 
-/* SlickNav Mobile Menu Styles */
+/* ---- Fixed SlickNav Styles to Match Shared Example ---- */
+
 .slicknav_menu {
-  background-color: var(--main-color);
+  background-color: #800000;
   font-family: Arial, sans-serif;
   padding: 0;
-  margin-top: 10px;
+  margin: 0;
 }
 
 .slicknav_btn {
-  background-color: var(--main-color);
+  background-color: #800000;
   color: white;
   padding: 10px 15px;
   border: none;
   font-size: 16px;
   text-align: left;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .slicknav_nav {
-  background-color: var(--main-color);
-  margin: 0;
+  background-color: #800000;
   padding: 0;
+  margin: 0;
 }
 
 .slicknav_nav li {
-  list-style-type: none;
   border-top: 1px solid #a0522d;
 }
 
 .slicknav_nav a {
+  display: block;
+  padding: 12px 20px;
   color: white;
   text-decoration: none;
-  display: block;
-  padding: 10px 20px;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .slicknav_nav a:hover,
 .slicknav_nav .slicknav_row:hover {
-  background-color: #ffd700;
-  color: #000;
+  background-color: #b22222;
+  color: #fff;
 }
 
 .slicknav_nav ul {
-  padding-left: 20px;
-  background-color: #a52a2a;
+  padding-left: 15px;
+  background-color: #800000;
 }
 
 .slicknav_arrow {
   float: right;
   margin-right: 10px;
+  color: white;
+}
+
+
+@media screen and (max-width: 768px) {
+  #menu {
+    display: none;
+  }
 }
